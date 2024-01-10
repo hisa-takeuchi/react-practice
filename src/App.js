@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from 'react';
+import Chat from './Chat.js';
+import ContactList from './ContactList.js';
+import { initialState, messengerReducer } from './messengerReducer';
 
-function App() {
+export default function Messenger() {
+  const [state, dispatch] = useReducer(messengerReducer, initialState);
+  const message = state.messages[state.selectedId];
+  const contact = contacts.find((c) => c.id === state.selectedId);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ContactList
+        contacts={contacts}
+        selectedId={state.selectedId}
+        dispatch={dispatch}
+      />
+      <Chat
+        key={contact.id}
+        message={message}
+        contact={contact}
+        dispatch={dispatch}
+      />
     </div>
   );
 }
 
-export default App;
+const contacts = [
+  {id: 0, name: 'Taylor', email: 'taylor@mail.com'},
+  {id: 1, name: 'Alice', email: 'alice@mail.com'},
+  {id: 2, name: 'Bob', email: 'bob@mail.com'},
+];
